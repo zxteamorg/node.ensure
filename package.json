@@ -1,0 +1,41 @@
+{
+	"name": "@zxteam/ensure.js",
+	"version": "0.0.0",
+	"description": "Helper library to validate your data",
+	"main": "./src/index.js",
+	"types": "./src/index.d.ts",
+	"author": {
+		"name": "Maxim Anurin",
+		"email": "maxim.anurin@zxteam.org",
+		"url": "http://www.anurin.name"
+	},
+	"contributors": [
+		{
+			"name": "Serg Zgama",
+			"email": "serg.zgama@zxteam.org"
+		}
+	],
+	"license": "MIT",
+	"devDependencies": {
+		"@types/lodash": "^4.14.118",
+		"@zxnode/build": "0.0.29",
+		"nyc": "^13.1.0"
+	},
+	"keywords": [],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/zxteamorg/ensure.js.git"
+	},
+	"bugs": {
+		"url": "https://github.com/zxteamorg/ensure.js/issues"
+	},
+	"homepage": "https://github.com/zxteamorg/ensure.js#readme",
+	"scripts": {
+		"build": "zxbuild clean dist",
+		"test": "nyc --exclude submodules --exclude test --reporter=lcov --reporter=text --reporter=text-summary mocha 'test/**/*.test.js' --recursive --timeout 10000"
+	},
+	"private": true,
+	"dependencies": {
+		"lodash": "^4.17.11"
+	}
+}
