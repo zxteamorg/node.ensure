@@ -9,26 +9,26 @@ export class EnsureError extends Error {
 }
 
 export interface Ensure {
-	demandArray<T>(data: Array<T>): Array<T>;
-	demandBoolean(data: boolean): boolean;
-	demandDate(data: Date): Date;
-	demandInteger(data: number): number;
-	demandNumber(data: number): number;
-	demandObject<T>(data: T): T;
-	demandString(data: string): string;
+	enforceArray<T>(data: Array<T>): Array<T>;
+	enforceBoolean(data: boolean): boolean;
+	enforceDate(data: Date): Date;
+	enforceInteger(data: number): number;
+	enforceNumber(data: number): number;
+	enforceObject<T>(data: T): T;
+	enforceString(data: string): string;
 
-	demandNullableArray<T>(data: Array<T> | null): Array<T> | null;
-	demandNullableBoolean(data: boolean | null): boolean | null;
-	demandNullableDate(data: Date | null): Date | null;
-	demandNullableInteger(data: number | null): number | null;
-	demandNullableNumber(data: number | null): number | null;
-	demandNullableObject<T>(data: T | null): T | null;
-	demandNullableString(data: string | null): string | null;
+	enforceNullableArray<T>(data: Array<T> | null): Array<T> | null;
+	enforceNullableBoolean(data: boolean | null): boolean | null;
+	enforceNullableDate(data: Date | null): Date | null;
+	enforceNullableInteger(data: number | null): number | null;
+	enforceNullableNumber(data: number | null): number | null;
+	enforceNullableObject<T>(data: T | null): T | null;
+	enforceNullableString(data: string | null): string | null;
 }
 
 export function ensureFactory(errorFactory?: (message: string, data: any) => void): Ensure {
 
-	function demandType<T>(data: T, checker: (v: T) => boolean, typeMsg: string): T {
+	function enforceType<T>(data: T, checker: (v: T) => boolean, typeMsg: string): T {
 		if (!checker(data)) {
 			const message = `Expected data to be ${typeMsg}`;
 			if (errorFactory) {
@@ -39,7 +39,7 @@ export function ensureFactory(errorFactory?: (message: string, data: any) => voi
 		}
 		return data;
 	}
-	function demandNullableType<T>(data: T, checker: (v: T) => boolean, typeMsg: string): T | null {
+	function enforceNullableType<T>(data: T, checker: (v: T) => boolean, typeMsg: string): T | null {
 		if (data != null && !checker(data)) {
 			const message = `Expected data to be ${typeMsg} or null`;
 			if (errorFactory) {
@@ -52,21 +52,21 @@ export function ensureFactory(errorFactory?: (message: string, data: any) => voi
 	}
 
 	return {
-		demandArray: <T>(data: Array<T>): Array<T> => { return demandType(data, _.isArray, "Array"); },
-		demandBoolean: (data: boolean): boolean => { return demandType(data, _.isBoolean, "boolean"); },
-		demandDate: (data: Date): Date => { return demandType(data, _.isDate, "Date"); },
-		demandInteger: (data: number): number => { return demandType(data, _.isInteger, "integer"); },
-		demandNumber: (data: number): number => { return demandType(data, _.isNumber, "number"); },
-		demandObject: <T>(data: T): T => { return demandType(data, _.isObject, "object"); },
-		demandString: (data: string): string => { return demandType(data, _.isString, "string"); },
+		enforceArray: <T>(data: Array<T>): Array<T> => { return enforceType(data, _.isArray, "Array"); },
+		enforceBoolean: (data: boolean): boolean => { return enforceType(data, _.isBoolean, "boolean"); },
+		enforceDate: (data: Date): Date => { return enforceType(data, _.isDate, "Date"); },
+		enforceInteger: (data: number): number => { return enforceType(data, _.isInteger, "integer"); },
+		enforceNumber: (data: number): number => { return enforceType(data, _.isNumber, "number"); },
+		enforceObject: <T>(data: T): T => { return enforceType(data, _.isObject, "object"); },
+		enforceString: (data: string): string => { return enforceType(data, _.isString, "string"); },
 
-		demandNullableArray: <T>(data: Array<T> | null): Array<T> | null => { return demandNullableType(data, _.isArray, "Array"); },
-		demandNullableBoolean: (data: boolean | null): boolean | null => { return demandNullableType(data, _.isBoolean, "boolean"); },
-		demandNullableDate: (data: Date | null): Date | null => { return demandNullableType(data, _.isDate, "Date"); },
-		demandNullableInteger: (data: number | null): number | null => { return demandNullableType(data, _.isInteger, "integer"); },
-		demandNullableNumber: (data: number | null): number | null => { return demandNullableType(data, _.isNumber, "number"); },
-		demandNullableObject: <T>(data: T | null): T | null => { return demandNullableType(data, _.isObject, "object"); },
-		demandNullableString: (data: string | null): string | null => { return demandNullableType(data, _.isString, "string"); }
+		enforceNullableArray: <T>(data: Array<T> | null): Array<T> | null => { return enforceNullableType(data, _.isArray, "Array"); },
+		enforceNullableBoolean: (data: boolean | null): boolean | null => { return enforceNullableType(data, _.isBoolean, "boolean"); },
+		enforceNullableDate: (data: Date | null): Date | null => { return enforceNullableType(data, _.isDate, "Date"); },
+		enforceNullableInteger: (data: number | null): number | null => { return enforceNullableType(data, _.isInteger, "integer"); },
+		enforceNullableNumber: (data: number | null): number | null => { return enforceNullableType(data, _.isNumber, "number"); },
+		enforceNullableObject: <T>(data: T | null): T | null => { return enforceNullableType(data, _.isObject, "object"); },
+		enforceNullableString: (data: string | null): string | null => { return enforceNullableType(data, _.isString, "string"); }
 	};
 }
 

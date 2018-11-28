@@ -1,6 +1,6 @@
 {
 	"name": "@zxteam/ensure.js",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"description": "Helper library to validate your data",
 	"main": "./src/index.js",
 	"types": "./src/index.d.ts",
@@ -32,7 +32,7 @@
 	"homepage": "https://github.com/zxteamorg/ensure.js#readme",
 	"scripts": {
 		"build": "zxbuild clean dist",
-		"test": "nyc --exclude submodules --exclude test --reporter=lcov --reporter=text --reporter=text-summary mocha 'test/**/*.test.js' --recursive --timeout 10000"
+		"test": "nyc --exclude submodules --exclude test --reporter=lcov --reporter=text --reporter=text-summary mocha 'test/**/*.test.js' --recursive"
 	},
 	"private": true,
 	"dependencies": {

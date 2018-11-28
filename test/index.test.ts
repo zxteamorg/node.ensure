@@ -11,61 +11,61 @@ describe("Ensure tests", function () {
 	});
 
 	const specs = {
-		demands: [
-			"demandArray", "demandBoolean", "demandDate", "demandInteger",
-			"demandNullableArray", "demandNullableBoolean",
-			"demandNullableDate", "demandNullableInteger",
-			"demandNullableNumber", "demandNullableObject",
-			"demandNullableString", "demandNumber", "demandObject", "demandString"
+		enforces: [
+			"enforceArray", "enforceBoolean", "enforceDate", "enforceInteger",
+			"enforceNullableArray", "enforceNullableBoolean",
+			"enforceNullableDate", "enforceNullableInteger",
+			"enforceNullableNumber", "enforceNullableObject",
+			"enforceNullableString", "enforceNumber", "enforceObject", "enforceString"
 		],
 		useCases: [
 			{
 				name: "Array",
 				data: [1, 2, 3],
-				should: ["demandArray", "demandNullableArray", "demandNullableObject", "demandObject"]
+				should: ["enforceArray", "enforceNullableArray", "enforceNullableObject", "enforceObject"]
 			},
 			{
 				name: "Boolean (true)",
 				data: true,
-				should: ["demandBoolean", "demandNullableBoolean"]
+				should: ["enforceBoolean", "enforceNullableBoolean"]
 			},
 			{
 				name: "Boolean (false)",
 				data: false,
-				should: ["demandBoolean", "demandNullableBoolean"]
+				should: ["enforceBoolean", "enforceNullableBoolean"]
 			},
 			{
 				name: "Date",
 				data: new Date(),
-				should: ["demandDate", "demandNullableDate", "demandNullableObject", "demandObject"]
+				should: ["enforceDate", "enforceNullableDate", "enforceNullableObject", "enforceObject"]
 			},
 			{
 				name: "Integer",
 				data: 42,
-				should: ["demandInteger", "demandNullableInteger", "demandNullableNumber", "demandNumber"]
+				should: ["enforceInteger", "enforceNullableInteger", "enforceNullableNumber", "enforceNumber"]
 			},
 			{
 				name: "Number",
 				data: 42.42,
-				should: ["demandNullableNumber", "demandNumber"]
+				should: ["enforceNullableNumber", "enforceNumber"]
 			},
 			{
 				name: "Object",
 				data: { some: 42 },
-				should: ["demandNullableObject", "demandObject"]
+				should: ["enforceNullableObject", "enforceObject"]
 			},
 			{
 				name: "String",
 				data: "42",
-				should: ["demandNullableString", "demandString"]
+				should: ["enforceNullableString", "enforceString"]
 			},
 			{
 				name: "null",
 				data: null,
-				should: ["demandNullableArray", "demandNullableBoolean",
-					"demandNullableDate", "demandNullableInteger",
-					"demandNullableNumber", "demandNullableObject",
-					"demandNullableString"]
+				should: ["enforceNullableArray", "enforceNullableBoolean",
+					"enforceNullableDate", "enforceNullableInteger",
+					"enforceNullableNumber", "enforceNullableObject",
+					"enforceNullableString"]
 			}
 		]
 	};
@@ -83,7 +83,7 @@ describe("Ensure tests", function () {
 				assert.equal(data, result);
 			});
 		});
-		specs.demands.forEach(shouldNot => {
+		specs.enforces.forEach(shouldNot => {
 			if (useCase.should.indexOf(shouldNot) === -1) {
 				it(`Default Ensure ${useCase.name} should NOT work with ${shouldNot}`, function () {
 					const data = useCase.data;
@@ -108,28 +108,4 @@ describe("Ensure tests", function () {
 			}
 		});
 	});
-
-	// it("Array", function () {
-	// 	const data: any = [1, 2, 3];
-
-	// 	assert.throw(() => ensure.demandArray(data), "Should not demand Array");
-	// 	assert.throw(() => ensure.demandBoolean(data), "Should not demand Boolean");
-	// 	assert.throw(() => ensure.demandDate(data), "Should not demand Date");
-	// 	assert.throw(() => ensure.demandInteger(data), "Should not demand Integer");
-	// 	assert.throw(() => ensure.demandNullableArray(data), "Should not demand Nullable Array");
-	// 	assert.throw(() => ensure.demandNullableBoolean(data), "Should not demand Nullable Boolean");
-	// 	assert.throw(() => ensure.demandNullableDate(data), "Should not demand Nullable Date");
-	// 	assert.throw(() => ensure.demandNullableInteger(data), "Should not demand Nullable Integer");
-	// 	assert.throw(() => ensure.demandNullableNumber(data), "Should not demand Nullable Number");
-	// 	assert.throw(() => ensure.demandNullableObject(data), "Should not demand Nullable Object");
-	// 	assert.throw(() => ensure.demandNullableString(data), "Should not demand Nullable String");
-	// 	assert.throw(() => ensure.demandNumber(data), "Should not demand Number");
-	// 	assert.throw(() => ensure.demandObject(data), "Should not demand Object");
-	// 	assert.throw(() => ensure.demandString(data), "Should not demand String");
-
-	// 	const result = data;
-	// 	assert.strictEqual(data, result);
-	// });
-
-
 });
