@@ -11,61 +11,61 @@ describe("Ensure tests", function () {
 	});
 
 	const specs = {
-		enforces: [
-			"enforceArray", "enforceBoolean", "enforceDate", "enforceInteger",
-			"enforceNullableArray", "enforceNullableBoolean",
-			"enforceNullableDate", "enforceNullableInteger",
-			"enforceNullableNumber", "enforceNullableObject",
-			"enforceNullableString", "enforceNumber", "enforceObject", "enforceString"
+		s: [
+			"array", "boolean", "date", "integer",
+			"nullableArray", "nullableBoolean",
+			"nullableDate", "nullableInteger",
+			"nullableNumber", "nullableObject",
+			"nullableString", "number", "object", "string"
 		],
 		useCases: [
 			{
-				name: "Array",
+				name: "array",
 				data: [1, 2, 3],
-				should: ["enforceArray", "enforceNullableArray", "enforceNullableObject", "enforceObject"]
+				should: ["array", "nullableArray", "nullableObject", "object"]
 			},
 			{
 				name: "Boolean (true)",
 				data: true,
-				should: ["enforceBoolean", "enforceNullableBoolean"]
+				should: ["boolean", "nullableBoolean"]
 			},
 			{
 				name: "Boolean (false)",
 				data: false,
-				should: ["enforceBoolean", "enforceNullableBoolean"]
+				should: ["boolean", "nullableBoolean"]
 			},
 			{
-				name: "Date",
+				name: "date",
 				data: new Date(),
-				should: ["enforceDate", "enforceNullableDate", "enforceNullableObject", "enforceObject"]
+				should: ["date", "nullableDate", "nullableObject", "object"]
 			},
 			{
-				name: "Integer",
+				name: "integer",
 				data: 42,
-				should: ["enforceInteger", "enforceNullableInteger", "enforceNullableNumber", "enforceNumber"]
+				should: ["integer", "nullableInteger", "nullableNumber", "number"]
 			},
 			{
-				name: "Number",
+				name: "number",
 				data: 42.42,
-				should: ["enforceNullableNumber", "enforceNumber"]
+				should: ["nullableNumber", "number"]
 			},
 			{
-				name: "Object",
+				name: "object",
 				data: { some: 42 },
-				should: ["enforceNullableObject", "enforceObject"]
+				should: ["nullableObject", "object"]
 			},
 			{
-				name: "String",
+				name: "string",
 				data: "42",
-				should: ["enforceNullableString", "enforceString"]
+				should: ["nullableString", "string"]
 			},
 			{
 				name: "null",
 				data: null,
-				should: ["enforceNullableArray", "enforceNullableBoolean",
-					"enforceNullableDate", "enforceNullableInteger",
-					"enforceNullableNumber", "enforceNullableObject",
-					"enforceNullableString"]
+				should: ["nullableArray", "nullableBoolean",
+					"nullableDate", "nullableInteger",
+					"nullableNumber", "nullableObject",
+					"nullableString"]
 			}
 		]
 	};
@@ -83,7 +83,7 @@ describe("Ensure tests", function () {
 				assert.equal(data, result);
 			});
 		});
-		specs.enforces.forEach(shouldNot => {
+		specs.s.forEach(shouldNot => {
 			if (useCase.should.indexOf(shouldNot) === -1) {
 				it(`Default Ensure ${useCase.name} should NOT work with ${shouldNot}`, function () {
 					const data = useCase.data;

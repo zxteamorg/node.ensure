@@ -1,6 +1,6 @@
 {
 	"name": "@zxteam/ensure.js",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "Helper library to validate your data",
 	"main": "./src/index.js",
 	"types": "./src/index.d.ts",
@@ -18,8 +18,7 @@
 	"license": "MIT",
 	"devDependencies": {
 		"@types/lodash": "^4.14.118",
-		"@zxnode/build": "0.0.29",
-		"nyc": "^13.1.0"
+		"@zxnode/build": "0.0.30"
 	},
 	"keywords": [],
 	"repository": {
