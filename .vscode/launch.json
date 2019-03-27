@@ -8,6 +8,8 @@
 			"preLaunchTask": "compile:test:ts",
 			"runtimeExecutable": null,
 			"runtimeArgs": [
+				"--require",
+				"source-map-support/register",
 				"--nolazy"
 			],
 			"stopOnEntry": false,
