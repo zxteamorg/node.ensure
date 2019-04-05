@@ -1,3 +1,4 @@
+import { Financial } from "@zxteam/contract";
 import * as _ from "lodash";
 
 export class EnsureError extends Error {
@@ -9,86 +10,124 @@ export class EnsureError extends Error {
 }
 
 export interface Ensure {
-	array<T>(data: Array<T>): Array<T>;
-	arrayBuffer(data: ArrayBuffer): ArrayBuffer;
-	boolean(data: boolean): boolean;
-	date(data: Date): Date;
-	integer(data: number): number;
-	number(data: number): number;
-	object(data: Object): Object;
-	string(data: string): string;
+	array<T>(data: Array<T>, errorMessage?: string): Array<T>;
+	arrayBuffer(data: ArrayBuffer, errorMessage?: string): ArrayBuffer;
+	boolean(data: boolean, errorMessage?: string): boolean;
+	date(data: Date, errorMessage?: string): Date;
+	financial(data: Financial, errorMessage?: string): Financial;
+	integer(data: number, errorMessage?: string): number;
+	number(data: number, errorMessage?: string): number;
+	object(data: Object, errorMessage?: string): Object;
+	string(data: string, errorMessage?: string): string;
 
-	isArray<T>(data: Array<T>): data is Array<T>;
-	isArrayBuffer(data: ArrayBuffer): data is ArrayBuffer;
-	isBoolean(data: boolean): data is boolean;
-	isDate(data: Date): data is Date;
-	isInteger(data: number): data is number;
-	isNumber(data: number): data is number;
-	isObject(data: Object): data is Object;
-	isString(data: string): data is string;
-
-	nullableArray<T>(data: Array<T> | null): Array<T> | null;
-	nullableArrayBuffer(data: ArrayBuffer | null): ArrayBuffer | null;
-	nullableBoolean(data: boolean | null): boolean | null;
-	nullableDate(data: Date | null): Date | null;
-	nullableInteger(data: number | null): number | null;
-	nullableNumber(data: number | null): number | null;
-	nullableObject(data: Object | null): Object | null;
-	nullableString(data: string | null): string | null;
+	nullableArray<T>(data: Array<T> | null, errorMessage?: string): Array<T> | null;
+	nullableArrayBuffer(data: ArrayBuffer | null, errorMessage?: string): ArrayBuffer | null;
+	nullableBoolean(data: boolean | null, errorMessage?: string): boolean | null;
+	nullableDate(data: Date | null, errorMessage?: string): Date | null;
+	nullableFinancial(data: Financial | null, errorMessage?: string): Financial | null;
+	nullableInteger(data: number | null, errorMessage?: string): number | null;
+	nullableNumber(data: number | null, errorMessage?: string): number | null;
+	nullableObject(data: Object | null, errorMessage?: string): Object | null;
+	nullableString(data: string | null, errorMessage?: string): string | null;
 }
 
 export function ensureFactory(errorFactory?: (message: string, data: any) => never): Ensure {
 
-	function Type<T>(data: T, checker: (v: T) => boolean, typeMsg: string): T {
+	function Type<T>(data: T, checker: (v: T) => boolean, typeMsg: string, userErrorMessage?: string): T {
 		if (!checker(data)) {
-			const message = `Expected data to be ${typeMsg}`;
+			const message = userErrorMessage || `Expected data to be ${typeMsg}`;
 			if (errorFactory) {
-				throw errorFactory(message, data);
-			} else {
-				throw new EnsureError(message, data);
+				errorFactory(message, data); // throws an user's error
 			}
+
+			throw new EnsureError(message, data);
 		}
 		return data;
 	}
-	function NullableType<T>(data: T, checker: (v: T) => boolean, typeMsg: string): T | null {
+	function NullableType<T>(data: T, checker: (v: T) => boolean, typeMsg: string, userErrorMessage?: string): T | null {
 		if (data != null && !checker(data)) {
-			const message = `Expected data to be ${typeMsg} or null`;
+			const message = userErrorMessage || `Expected data to be ${typeMsg} or null`;
 			if (errorFactory) {
-				throw errorFactory(message, data);
-			} else {
-				throw new EnsureError(message, data);
+				throw errorFactory(message, data); // throws an user's error
 			}
+
+			throw new EnsureError(message, data);
 		}
 		return data;
 	}
 
 	return {
-		array: <T>(data: Array<T>): Array<T> => { return Type(data, _.isArray, "Array"); },
-		arrayBuffer: (data: ArrayBuffer): ArrayBuffer => { return Type(data, _.isArrayBuffer, "ArrayBuffer"); },
-		boolean: (data: boolean): boolean => { return Type(data, _.isBoolean, "boolean"); },
-		date: (data: Date): Date => { return Type(data, _.isDate, "Date"); },
-		integer: (data: number): number => { return Type(data, _.isInteger, "integer"); },
-		number: (data: number): number => { return Type(data, _.isNumber, "number"); },
-		object: (data: Object): Object => { return Type(data, _.isObject, "object"); },
-		string: (data: string): string => { return Type(data, _.isString, "string"); },
+		array: <T>(data: Array<T>, errorMessage?: string): Array<T> => {
+			return Type(data, _.isArray, "Array", errorMessage);
+		},
+		arrayBuffer: (data: ArrayBuffer, errorMessage?: string): ArrayBuffer => {
+			return Type(data, _.isArrayBuffer, "ArrayBuffer", errorMessage);
+		},
+		boolean: (data: boolean, errorMessage?: string): boolean => {
+			return Type(data, _.isBoolean, "boolean", errorMessage);
+		},
+		date: (data: Date, errorMessage?: string): Date => {
+			return Type(data, _.isDate, "Date", errorMessage);
+		},
+		financial: (data: Financial, errorMessage?: string): Financial => {
+			if (!(_.isObject(data) && _.isString(data.value) && _.isInteger(data.fraction))) {
+				const message = errorMessage || `Expected data to be Financial`;
+				if (errorFactory) {
+					errorFactory(message, data); // throws an user's error
+				}
 
-		isArray: _.isArray,
-		isArrayBuffer: _.isArrayBuffer,
-		isBoolean: _.isBoolean,
-		isDate: _.isDate,
-		isInteger: (data): data is number => _.isInteger(data),
-		isNumber: _.isNumber,
-		isObject: (data): data is Object => _.isObject(data),
-		isString: _.isString,
+				throw new EnsureError(message, data);
+			}
+			return data;
+		},
+		integer: (data: number, errorMessage?: string): number => {
+			return Type(data, _.isInteger, "integer", errorMessage);
+		},
+		number: (data: number, errorMessage?: string): number => {
+			return Type(data, _.isNumber, "number", errorMessage);
+		},
+		object: (data: Object, errorMessage?: string): Object => {
+			return Type(data, _.isObject, "object", errorMessage);
+		},
+		string: (data: string, errorMessage?: string): string => {
+			return Type(data, _.isString, "string", errorMessage);
+		},
 
-		nullableArray: <T>(data: Array<T> | null): Array<T> | null => { return NullableType(data, _.isArray, "Array"); },
-		nullableArrayBuffer: (data: ArrayBuffer | null): ArrayBuffer | null => { return NullableType(data, _.isArrayBuffer, "ArrayBuffer"); },
-		nullableBoolean: (data: boolean | null): boolean | null => { return NullableType(data, _.isBoolean, "boolean"); },
-		nullableDate: (data: Date | null): Date | null => { return NullableType(data, _.isDate, "Date"); },
-		nullableInteger: (data: number | null): number | null => { return NullableType(data, _.isInteger, "integer"); },
-		nullableNumber: (data: number | null): number | null => { return NullableType(data, _.isNumber, "number"); },
-		nullableObject: <T>(data: T | null): T | null => { return NullableType(data, _.isObject, "object"); },
-		nullableString: (data: string | null): string | null => { return NullableType(data, _.isString, "string"); }
+		nullableArray: <T>(data: Array<T> | null, errorMessage?: string): Array<T> | null => {
+			return NullableType(data, _.isArray, "Array", errorMessage);
+		},
+		nullableArrayBuffer: (data: ArrayBuffer | null, errorMessage?: string): ArrayBuffer | null => {
+			return NullableType(data, _.isArrayBuffer, "ArrayBuffer", errorMessage);
+		},
+		nullableBoolean: (data: boolean | null, errorMessage?: string): boolean | null => {
+			return NullableType(data, _.isBoolean, "boolean", errorMessage);
+		},
+		nullableDate: (data: Date | null, errorMessage?: string): Date | null => {
+			return NullableType(data, _.isDate, "Date", errorMessage);
+		},
+		nullableFinancial: (data: Financial | null, errorMessage?: string): Financial | null => {
+			if (data !== null && !(_.isString(data.value) && _.isInteger(data.fraction))) {
+				const message = errorMessage || `Expected data to be Financial or null`;
+				if (errorFactory) {
+					errorFactory(message, data); // throws an user's error
+				}
+
+				throw new EnsureError(message, data);
+			}
+			return data;
+		},
+		nullableInteger: (data: number | null, errorMessage?: string): number | null => {
+			return NullableType(data, _.isInteger, "integer", errorMessage);
+		},
+		nullableNumber: (data: number | null, errorMessage?: string): number | null => {
+			return NullableType(data, _.isNumber, "number", errorMessage);
+		},
+		nullableObject: <T>(data: T | null, errorMessage?: string): T | null => {
+			return NullableType(data, _.isObject, "object", errorMessage);
+		},
+		nullableString: (data: string | null, errorMessage?: string): string | null => {
+			return NullableType(data, _.isString, "string", errorMessage);
+		}
 	};
 }
 

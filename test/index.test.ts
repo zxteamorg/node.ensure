@@ -12,73 +12,70 @@ describe("Ensure tests", function () {
 
 	const specs = {
 		s: [
-			"array", "arrayBuffer", "boolean", "date", "integer", "number", "object", "string",
-			"nullableArray", "nullableArrayBuffer", "nullableBoolean", "nullableDate",
+			"array", "arrayBuffer", "boolean", "date", "financial", "integer",
+			"number", "object", "string", "nullableArray", "nullableArrayBuffer",
+			"nullableBoolean", "nullableDate", "nullableFinancial",
 			"nullableInteger", "nullableNumber", "nullableObject", "nullableString"
 		],
 		useCases: [
 			{
 				name: "array",
 				data: [1, 2, 3],
-				should: ["array", "nullableArray", "nullableObject", "object"],
-				is: ["isArray", "isObject"]
+				should: ["array", "nullableArray", "nullableObject", "object"]
 			},
 			{
 				name: "ArrayBuffer",
 				data: new ArrayBuffer(0),
-				should: ["arrayBuffer", "nullableArrayBuffer", "nullableObject", "object"],
-				is: ["isArrayBuffer", "isObject"]
+				should: ["arrayBuffer", "nullableArrayBuffer", "nullableObject", "object"]
 			},
 			{
 				name: "Boolean (true)",
 				data: true,
-				should: ["boolean", "nullableBoolean"],
-				is: ["isBoolean"]
+				should: ["boolean", "nullableBoolean"]
 			},
 			{
 				name: "Boolean (false)",
 				data: false,
-				should: ["boolean", "nullableBoolean"],
-				is: ["isBoolean"]
+				should: ["boolean", "nullableBoolean"]
 			},
 			{
 				name: "date",
 				data: new Date(),
-				should: ["date", "nullableDate", "nullableObject", "object"],
-				is: ["isDate", "isObject"]
+				should: ["date", "nullableDate", "nullableObject", "object"]
+			},
+			{
+				name: "financial",
+				data: { value: "420", fraction: 1 },
+				should: ["financial", "nullableFinancial", "nullableObject", "object"]
 			},
 			{
 				name: "integer",
 				data: 42,
-				should: ["integer", "nullableInteger", "nullableNumber", "number"],
-				is: ["isInteger", "isNumber"]
+				should: ["integer", "nullableInteger", "nullableNumber", "number"]
 			},
 			{
 				name: "number",
 				data: 42.42,
-				should: ["nullableNumber", "number"],
-				is: ["isNumber"]
+				should: ["nullableNumber", "number"]
 			},
 			{
 				name: "object",
 				data: { some: 42 },
-				should: ["nullableObject", "object"],
-				is: ["isObject"]
+				should: ["nullableObject", "object"]
 			},
 			{
 				name: "string",
 				data: "42",
-				should: ["nullableString", "string"],
-				is: ["isString"]
+				should: ["nullableString", "string"]
 			},
 			{
 				name: "null",
 				data: null,
-				should: ["nullableArray", "nullableArrayBuffer", "nullableBoolean",
-					"nullableDate", "nullableInteger",
-					"nullableNumber", "nullableObject",
-					"nullableString"],
-				is: []
+				should: [
+					"nullableArray", "nullableArrayBuffer", "nullableBoolean",
+					"nullableDate", "nullableFinancial", "nullableInteger",
+					"nullableNumber", "nullableObject", "nullableString"
+				]
 			}
 		]
 	};
@@ -94,13 +91,6 @@ describe("Ensure tests", function () {
 				const data = useCase.data;
 				const result = (ensureWithCustomError as any)[should](data);
 				assert.equal(data, result);
-			});
-		});
-		useCase.is.forEach(is => {
-			it(`Default Ensure ${useCase.name} should work with ${is}`, function () {
-				const data = useCase.data;
-				const result = (ensure as any)[is](data);
-				assert.isTrue(result);
 			});
 		});
 		specs.s.forEach(shouldNot => {
