@@ -70,7 +70,14 @@ export function ensureFactory(errorFactory?: (message: string, data: any) => nev
 			return Type(data, _.isDate, "Date", errorMessage);
 		},
 		financial: (data: Financial, errorMessage?: string): Financial => {
-			if (!(_.isObject(data) && _.isString(data.value) && _.isInteger(data.fraction))) {
+			if (
+				!(
+					_.isObject(data) &&
+					(data.sign === "+" || data.sign === "-") &&
+					_.isString(data.whole) &&
+					_.isString(data.fractional)
+				)
+			) {
 				const message = errorMessage || `Expected data to be Financial`;
 				if (errorFactory) {
 					errorFactory(message, data); // throws an user's error
@@ -106,7 +113,15 @@ export function ensureFactory(errorFactory?: (message: string, data: any) => nev
 			return NullableType(data, _.isDate, "Date", errorMessage);
 		},
 		nullableFinancial: (data: Financial | null, errorMessage?: string): Financial | null => {
-			if (data !== null && !(_.isString(data.value) && _.isInteger(data.fraction))) {
+			if (
+				data !== null &&
+				!(
+					_.isObject(data) &&
+					(data.sign === "+" || data.sign === "-") &&
+					_.isString(data.whole) &&
+					_.isString(data.fractional)
+				)
+			) {
 				const message = errorMessage || `Expected data to be Financial or null`;
 				if (errorFactory) {
 					errorFactory(message, data); // throws an user's error

@@ -45,7 +45,7 @@ describe("Ensure tests", function () {
 			},
 			{
 				name: "financial",
-				data: { value: "420", fraction: 1 },
+				data: { sign: "+", whole: "42", fractional: "0" },
 				should: ["financial", "nullableFinancial", "nullableObject", "object"]
 			},
 			{
