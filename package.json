@@ -1,15 +1,20 @@
 {
 	"name": "@zxteam/ensure.js",
-	"version": "1.2.0",
+	"version": "5.0.1",
 	"description": "Helper library to validate your data",
 	"main": "./src/index.js",
 	"types": "./src/index.d.ts",
 	"author": {
-		"name": "Maxim Anurin",
-		"email": "maxim.anurin@zxteam.org",
-		"url": "http://www.anurin.name"
+		"name": "ZXTeam",
+		"email": "pub@project.zxteam.org",
+		"url": "http://www.zxteam.org"
 	},
 	"contributors": [
+		{
+			"name": "Maxim Anurin",
+			"email": "maxim.anurin@zxteam.org",
+			"url": "http://www.anurin.name"
+		},
 		{
 			"name": "Serhii Zghama",
 			"email": "serhii.zghama@zxteam.org"
@@ -17,12 +22,12 @@
 	],
 	"license": "MIT",
 	"dependencies": {
-		"@zxteam/contract": "^3.2.2",
+		"@zxteam/contract": "^5.0.1",
 		"lodash": "^4.17.11"
 	},
 	"devDependencies": {
-		"@types/lodash": "^4.14.123",
-		"@zxnode/build": "^0.0.33"
+		"@types/lodash": "^4.14.124",
+		"@zxnode/build": "^0.0.34"
 	},
 	"keywords": [],
 	"repository": {
