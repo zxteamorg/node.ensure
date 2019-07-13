@@ -1,6 +1,6 @@
 {
 	"name": "@zxteam/ensure.js",
-	"version": "5.0.1",
+	"version": "6.0.1",
 	"description": "Helper library to validate your data",
 	"main": "./src/index.js",
 	"types": "./src/index.d.ts",
@@ -22,11 +22,11 @@
 	],
 	"license": "MIT",
 	"dependencies": {
-		"@zxteam/contract": "^5.0.1",
-		"lodash": "^4.17.11"
+		"@zxteam/contract": "^6.0.1",
+		"lodash": "^4.17.14"
 	},
 	"devDependencies": {
-		"@types/lodash": "^4.14.124",
+		"@types/lodash": "^4.14.136",
 		"@zxnode/build": "^0.0.34"
 	},
 	"keywords": [],
@@ -40,7 +40,7 @@
 	"homepage": "https://github.com/zxteamorg/ensure.js#readme",
 	"scripts": {
 		"build": "zxbuild clean dist",
-		"test": "nyc --exclude submodules --exclude test --reporter=lcov --reporter=text --reporter=text-summary mocha \"test/**/*.test.js\" --recursive",
+		"test": "nyc --exclude submodules --exclude test --extension=\".ts\" --reporter=lcov --reporter=text --reporter=text-summary mocha \"test/**/*.test.js\" --recursive",
 		"test:only": "mocha --require source-map-support/register \"test/**/*.test.js\" --recursive"
 	},
 	"private": true
