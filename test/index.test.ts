@@ -12,68 +12,68 @@ describe("Ensure tests", function () {
 
 	const specs = {
 		s: [
-			"array", "arrayBuffer", "boolean", "date", "financial", "integer",
+			"array", "arrayBuffer", "boolean", "date", "defined", "financial", "integer",
 			"number", "object", "string", "nullableArray", "nullableArrayBuffer",
-			"nullableBoolean", "nullableDate", "nullableFinancial",
+			"nullableBoolean", "nullableDate", "nullableDefined", "nullableFinancial",
 			"nullableInteger", "nullableNumber", "nullableObject", "nullableString"
 		],
 		useCases: [
 			{
 				name: "array",
 				data: [1, 2, 3],
-				should: ["array", "nullableArray", "nullableObject", "object"]
+				should: ["array", "defined", "nullableArray", "nullableDefined", "nullableObject", "object"]
 			},
 			{
 				name: "ArrayBuffer",
 				data: new ArrayBuffer(0),
-				should: ["arrayBuffer", "nullableArrayBuffer", "nullableObject", "object"]
+				should: ["arrayBuffer", "defined", "nullableArrayBuffer", "nullableDefined", "nullableObject", "object"]
 			},
 			{
 				name: "Boolean (true)",
 				data: true,
-				should: ["boolean", "nullableBoolean"]
+				should: ["boolean", "defined", "nullableBoolean", "nullableDefined"]
 			},
 			{
 				name: "Boolean (false)",
 				data: false,
-				should: ["boolean", "nullableBoolean"]
+				should: ["boolean", "defined", "nullableBoolean", "nullableDefined"]
 			},
 			{
 				name: "date",
 				data: new Date(),
-				should: ["date", "nullableDate", "nullableObject", "object"]
+				should: ["date", "defined", "nullableDate", "nullableDefined", "nullableObject", "object"]
 			},
 			{
 				name: "financial",
 				data: { sign: "+", whole: "42", fractional: "0" },
-				should: ["financial", "nullableFinancial", "nullableObject", "object"]
+				should: ["defined", "nullableDefined", "financial", "nullableFinancial", "nullableObject", "object"]
 			},
 			{
 				name: "integer",
 				data: 42,
-				should: ["integer", "nullableInteger", "nullableNumber", "number"]
+				should: ["defined", "nullableDefined", "integer", "nullableInteger", "nullableNumber", "number"]
 			},
 			{
 				name: "number",
 				data: 42.42,
-				should: ["nullableNumber", "number"]
+				should: ["defined", "nullableDefined", "nullableNumber", "number"]
 			},
 			{
 				name: "object",
 				data: { some: 42 },
-				should: ["nullableObject", "object"]
+				should: ["defined", "nullableDefined", "nullableObject", "object"]
 			},
 			{
 				name: "string",
 				data: "42",
-				should: ["nullableString", "string"]
+				should: ["defined", "nullableDefined", "nullableString", "string"]
 			},
 			{
 				name: "null",
 				data: null,
 				should: [
 					"nullableArray", "nullableArrayBuffer", "nullableBoolean",
-					"nullableDate", "nullableFinancial", "nullableInteger",
+					"nullableDate", "nullableDefined", "nullableFinancial", "nullableInteger",
 					"nullableNumber", "nullableObject", "nullableString"
 				]
 			}
@@ -105,6 +105,17 @@ describe("Ensure tests", function () {
 					}
 					assert.isDefined(expectedError);
 				});
+				it(`Default Ensure ${useCase.name} should NOT work with ${shouldNot} (custom err message)`, function () {
+					const data = useCase.data;
+					let expectedError;
+					try {
+						(ensure as any)[shouldNot](data, "Custom err message");
+					} catch (e) {
+						expectedError = e;
+					}
+					assert.isDefined(expectedError);
+					assert.equal(expectedError.message, "Custom err message");
+				});
 				it(`Custom Ensure ${useCase.name} should NOT work with ${shouldNot}`, function () {
 					const data = useCase.data;
 					let expectedError;
@@ -115,7 +126,95 @@ describe("Ensure tests", function () {
 					}
 					assert.isDefined(expectedError);
 				});
+				it(`Custom Ensure ${useCase.name} should NOT work with ${shouldNot} (custom err message)`, function () {
+					const data = useCase.data;
+					let expectedError;
+					try {
+						(ensureWithCustomError as any)[shouldNot](data, "Custom err message");
+					} catch (e) {
+						expectedError = e;
+					}
+					assert.isDefined(expectedError);
+					assert.equal(expectedError.message, "Custom err message");
+				});
 			}
 		});
+	});
+
+	it(`Ensure undefiled should NOT work defined()`, function () {
+		let expectedError;
+		try {
+			ensure.defined(undefined);
+		} catch (e) {
+			expectedError = e;
+		}
+		assert.isDefined(expectedError);
+	});
+	it(`Ensure undefiled should NOT work nullableDefined()`, function () {
+		let expectedError;
+		try {
+			ensure.nullableDefined(undefined);
+		} catch (e) {
+			expectedError = e;
+		}
+		assert.isDefined(expectedError);
+	});
+	it(`Ensure undefiled should NOT work defined()`, function () {
+		let expectedError;
+		try {
+			ensureWithCustomError.defined(undefined);
+		} catch (e) {
+			expectedError = e;
+		}
+		assert.isDefined(expectedError);
+	});
+	it(`Ensure undefiled should NOT work nullableDefined()`, function () {
+		let expectedError;
+		try {
+			ensureWithCustomError.nullableDefined(undefined);
+		} catch (e) {
+			expectedError = e;
+		}
+		assert.isDefined(expectedError);
+	});
+	it(`Ensure undefiled should NOT work defined()`, function () {
+		let expectedError;
+		try {
+			ensure.defined(undefined, "Custom err message");
+		} catch (e) {
+			expectedError = e;
+		}
+		assert.isDefined(expectedError);
+		assert.equal(expectedError.message, "Custom err message");
+	});
+	it(`Ensure undefiled should NOT work nullableDefined()`, function () {
+		let expectedError;
+		try {
+			ensure.nullableDefined(undefined, "Custom err message");
+		} catch (e) {
+			expectedError = e;
+		}
+		assert.isDefined(expectedError);
+		assert.equal(expectedError.message, "Custom err message");
+	});
+	it(`Ensure undefiled should NOT work defined()`, function () {
+		let expectedError;
+		try {
+			ensure.defined(undefined, "Custom err message");
+		} catch (e) {
+			expectedError = e;
+		}
+		assert.isDefined(expectedError);
+		assert.equal(expectedError.message, "Custom err message");
+	});
+	it(`Ensure undefiled should NOT work nullableDefined()`, function () {
+		let expectedError;
+		try {
+			ensure.nullableDefined(undefined, "Custom err message");
+		} catch (e) {
+			expectedError = e;
+		}
+		assert.isDefined(expectedError);
+		assert.equal(expectedError.message, "Custom err message");
 	});
 });

@@ -14,6 +14,7 @@ export interface Ensure {
 	arrayBuffer(data: ArrayBuffer, errorMessage?: string): ArrayBuffer;
 	boolean(data: boolean, errorMessage?: string): boolean;
 	date(data: Date, errorMessage?: string): Date;
+	defined<T>(data: T | null | undefined, errorMessage?: string): T;
 	financial(data: Financial, errorMessage?: string): Financial;
 	integer(data: number, errorMessage?: string): number;
 	number(data: number, errorMessage?: string): number;
@@ -24,19 +25,21 @@ export interface Ensure {
 	nullableArrayBuffer(data: ArrayBuffer | null, errorMessage?: string): ArrayBuffer | null;
 	nullableBoolean(data: boolean | null, errorMessage?: string): boolean | null;
 	nullableDate(data: Date | null, errorMessage?: string): Date | null;
+	nullableDefined<T>(data: T | null | undefined, errorMessage?: string): T | null;
 	nullableFinancial(data: Financial | null, errorMessage?: string): Financial | null;
 	nullableInteger(data: number | null, errorMessage?: string): number | null;
 	nullableNumber(data: number | null, errorMessage?: string): number | null;
 	nullableObject(data: Object | null, errorMessage?: string): Object | null;
 	nullableString(data: string | null, errorMessage?: string): string | null;
+
 }
 
 export function ensureFactory(errorFactory?: (message: string, data: any) => never): Ensure {
 
 	function Type<T>(data: T, checker: (v: T) => boolean, typeMsg: string, userErrorMessage?: string): T {
 		if (!checker(data)) {
-			const message = userErrorMessage || `Expected data to be ${typeMsg}`;
-			if (errorFactory) {
+			const message = userErrorMessage !== undefined ? userErrorMessage : `Expected data to be ${typeMsg}`;
+			if (errorFactory !== undefined) {
 				errorFactory(message, data); // throws an user's error
 			}
 
@@ -46,8 +49,8 @@ export function ensureFactory(errorFactory?: (message: string, data: any) => nev
 	}
 	function NullableType<T>(data: T, checker: (v: T) => boolean, typeMsg: string, userErrorMessage?: string): T | null {
 		if (data != null && !checker(data)) {
-			const message = userErrorMessage || `Expected data to be ${typeMsg} or null`;
-			if (errorFactory) {
+			const message = userErrorMessage !== undefined ? userErrorMessage : `Expected data to be ${typeMsg} or null`;
+			if (errorFactory !== undefined) {
 				throw errorFactory(message, data); // throws an user's error
 			}
 
@@ -69,6 +72,16 @@ export function ensureFactory(errorFactory?: (message: string, data: any) => nev
 		date: (data: Date, errorMessage?: string): Date => {
 			return Type(data, _.isDate, "Date", errorMessage);
 		},
+		defined: <T>(data: T | null | undefined, errorMessage?: string): T => {
+			if (data === undefined || data === null) {
+				const message = errorMessage !== undefined ? errorMessage : "Expected data to be defined";
+				if (errorFactory !== undefined) {
+					errorFactory(message, data); // throws an user's error
+				}
+				throw new EnsureError(message, data);
+			}
+			return data;
+		},
 		financial: (data: Financial, errorMessage?: string): Financial => {
 			if (
 				!(
@@ -78,8 +91,8 @@ export function ensureFactory(errorFactory?: (message: string, data: any) => nev
 					_.isString(data.fractional)
 				)
 			) {
-				const message = errorMessage || `Expected data to be Financial`;
-				if (errorFactory) {
+				const message = errorMessage !== undefined ? errorMessage : "Expected data to be Financial";
+				if (errorFactory !== undefined) {
 					errorFactory(message, data); // throws an user's error
 				}
 
@@ -112,6 +125,16 @@ export function ensureFactory(errorFactory?: (message: string, data: any) => nev
 		nullableDate: (data: Date | null, errorMessage?: string): Date | null => {
 			return NullableType(data, _.isDate, "Date", errorMessage);
 		},
+		nullableDefined: <T>(data?: T | null, errorMessage?: string): T | null => {
+			if (data === undefined) {
+				const message = errorMessage !== undefined ? errorMessage : "Expected data to be defined";
+				if (errorFactory !== undefined) {
+					errorFactory(message, data); // throws an user's error
+				}
+				throw new EnsureError(message, data);
+			}
+			return data;
+		},
 		nullableFinancial: (data: Financial | null, errorMessage?: string): Financial | null => {
 			if (
 				data !== null &&
@@ -122,8 +145,8 @@ export function ensureFactory(errorFactory?: (message: string, data: any) => nev
 					_.isString(data.fractional)
 				)
 			) {
-				const message = errorMessage || `Expected data to be Financial or null`;
-				if (errorFactory) {
+				const message = errorMessage !== undefined ? errorMessage : "Expected data to be Financial or null";
+				if (errorFactory !== undefined) {
 					errorFactory(message, data); // throws an user's error
 				}
 
