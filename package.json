@@ -1,5 +1,5 @@
 {
-	"name": "@zxteam/ensure.js",
+	"name": "@zxteam/ensure",
 	"version": "6.0.2",
 	"description": "Helper library to validate your data",
 	"main": "./src/index.js",
@@ -32,12 +32,12 @@
 	"keywords": [],
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/zxteamorg/ensure.js.git"
+		"url": "git+https://github.com/zxteamorg/node-ensure.git"
 	},
 	"bugs": {
-		"url": "https://github.com/zxteamorg/ensure.js/issues"
+		"url": "https://github.com/zxteamorg/node-ensure/issues"
 	},
-	"homepage": "https://github.com/zxteamorg/ensure.js#readme",
+	"homepage": "https://github.com/zxteamorg/node-ensure",
 	"scripts": {
 		"build": "zxbuild clean dist",
 		"test": "nyc --exclude submodules --exclude test --extension=\".ts\" --reporter=lcov --reporter=text --reporter=text-summary mocha \"test/**/*.test.js\" --recursive",

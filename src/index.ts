@@ -18,6 +18,9 @@ export interface Ensure {
 	financial(data: Financial, errorMessage?: string): Financial;
 	integer(data: number, errorMessage?: string): number;
 	number(data: number, errorMessage?: string): number;
+	/**
+	 * @deprecated
+	 */
 	object(data: Object, errorMessage?: string): Object;
 	string(data: string, errorMessage?: string): string;
 
@@ -29,6 +32,9 @@ export interface Ensure {
 	nullableFinancial(data: Financial | null, errorMessage?: string): Financial | null;
 	nullableInteger(data: number | null, errorMessage?: string): number | null;
 	nullableNumber(data: number | null, errorMessage?: string): number | null;
+	/**
+	 * @deprecated
+	 */
 	nullableObject(data: Object | null, errorMessage?: string): Object | null;
 	nullableString(data: string | null, errorMessage?: string): string | null;
 
