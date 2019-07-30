@@ -12,9 +12,9 @@ describe("Ensure tests", function () {
 
 	const specs = {
 		s: [
-			"array", "arrayBuffer", "boolean", "date", "defined", "financial", "integer",
+			"array", "arrayBuffer", "boolean", "date", "defined", "integer",
 			"number", "object", "string", "nullableArray", "nullableArrayBuffer",
-			"nullableBoolean", "nullableDate", "nullableDefined", "nullableFinancial",
+			"nullableBoolean", "nullableDate", "nullableDefined",
 			"nullableInteger", "nullableNumber", "nullableObject", "nullableString"
 		],
 		useCases: [
@@ -44,11 +44,6 @@ describe("Ensure tests", function () {
 				should: ["date", "defined", "nullableDate", "nullableDefined", "nullableObject", "object"]
 			},
 			{
-				name: "financial",
-				data: { sign: "+", whole: "42", fractional: "0" },
-				should: ["defined", "nullableDefined", "financial", "nullableFinancial", "nullableObject", "object"]
-			},
-			{
 				name: "integer",
 				data: 42,
 				should: ["defined", "nullableDefined", "integer", "nullableInteger", "nullableNumber", "number"]
@@ -73,7 +68,7 @@ describe("Ensure tests", function () {
 				data: null,
 				should: [
 					"nullableArray", "nullableArrayBuffer", "nullableBoolean",
-					"nullableDate", "nullableDefined", "nullableFinancial", "nullableInteger",
+					"nullableDate", "nullableDefined", "nullableInteger",
 					"nullableNumber", "nullableObject", "nullableString"
 				]
 			}
