@@ -109,7 +109,7 @@ describe("Ensure tests", function () {
 						expectedError = e;
 					}
 					assert.isDefined(expectedError);
-					assert.equal(expectedError.message, "Custom err message");
+					assert.include(expectedError.message, "Custom err message");
 				});
 				it(`Custom Ensure ${useCase.name} should NOT work with ${shouldNot}`, function () {
 					const data = useCase.data;
@@ -130,7 +130,7 @@ describe("Ensure tests", function () {
 						expectedError = e;
 					}
 					assert.isDefined(expectedError);
-					assert.equal(expectedError.message, "Custom err message");
+					assert.include(expectedError.message, "Custom err message");
 				});
 			}
 		});
@@ -180,7 +180,7 @@ describe("Ensure tests", function () {
 			expectedError = e;
 		}
 		assert.isDefined(expectedError);
-		assert.equal(expectedError.message, "Custom err message");
+		assert.include(expectedError.message, "Custom err message");
 	});
 	it(`Ensure undefiled should NOT work nullableDefined()`, function () {
 		let expectedError;
@@ -190,7 +190,7 @@ describe("Ensure tests", function () {
 			expectedError = e;
 		}
 		assert.isDefined(expectedError);
-		assert.equal(expectedError.message, "Custom err message");
+		assert.include(expectedError.message, "Custom err message");
 	});
 	it(`Ensure undefiled should NOT work defined()`, function () {
 		let expectedError;
@@ -200,7 +200,7 @@ describe("Ensure tests", function () {
 			expectedError = e;
 		}
 		assert.isDefined(expectedError);
-		assert.equal(expectedError.message, "Custom err message");
+		assert.include(expectedError.message, "Custom err message");
 	});
 	it(`Ensure undefiled should NOT work nullableDefined()`, function () {
 		let expectedError;
@@ -210,6 +210,6 @@ describe("Ensure tests", function () {
 			expectedError = e;
 		}
 		assert.isDefined(expectedError);
-		assert.equal(expectedError.message, "Custom err message");
+		assert.include(expectedError.message, "Custom err message");
 	});
 });

@@ -27,11 +27,11 @@ export class EnsureError extends Error {
 }
 
 export interface Ensure {
-	array<T>(data: Array<T>, errorMessage?: string): Array<T>;
+	array<T = any>(data: Array<T>, errorMessage?: string): Array<T>;
 	arrayBuffer(data: ArrayBuffer, errorMessage?: string): ArrayBuffer;
 	boolean(data: boolean, errorMessage?: string): boolean;
 	date(data: Date, errorMessage?: string): Date;
-	defined<T>(data: T | null | undefined, errorMessage?: string): T;
+	defined<T = any>(data: T | null | undefined, errorMessage?: string): T;
 	integer(data: number, errorMessage?: string): number;
 	number(data: number, errorMessage?: string): number;
 	object<T = any>(data: T, errorMessage?: string): T;
@@ -50,25 +50,24 @@ export interface Ensure {
 
 export function ensureFactory(errorFactory?: (message: string, data: any) => never): Ensure {
 
+	function throwEnsureError(typeMsg: string, throwData: any, userErrorMessage?: string): never {
+		const errorMessage = `Expected data to be ${typeMsg}`;
+		const message = userErrorMessage !== undefined ? `${errorMessage}. ${userErrorMessage}` : errorMessage;
+		if (errorFactory !== undefined) {
+			errorFactory(message, throwData); // throws an user's error
+		}
+
+		throw new EnsureError(message, throwData);
+	}
 	function Type<T>(data: T, checker: (v: T) => boolean, typeMsg: string, userErrorMessage?: string): T {
 		if (!checker(data)) {
-			const message = userErrorMessage !== undefined ? userErrorMessage : `Expected data to be ${typeMsg}`;
-			if (errorFactory !== undefined) {
-				errorFactory(message, data); // throws an user's error
-			}
-
-			throw new EnsureError(message, data);
+			throwEnsureError(typeMsg, data, userErrorMessage);
 		}
 		return data;
 	}
 	function NullableType<T>(data: T, checker: (v: T) => boolean, typeMsg: string, userErrorMessage?: string): T | null {
 		if (data != null && !checker(data)) {
-			const message = userErrorMessage !== undefined ? userErrorMessage : `Expected data to be ${typeMsg} or null`;
-			if (errorFactory !== undefined) {
-				throw errorFactory(message, data); // throws an user's error
-			}
-
-			throw new EnsureError(message, data);
+			throwEnsureError(typeMsg, data, userErrorMessage);
 		}
 		return data;
 	}
