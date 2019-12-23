@@ -1,6 +1,6 @@
 {
 	"name": "@zxteam/ensure",
-	"version": "6.0.23",
+	"version": "6.0.40",
 	"description": "Helper library to validate your data",
 	"author": {
 		"name": "ZXTeam",
@@ -20,12 +20,12 @@
 	],
 	"license": "MIT",
 	"dependencies": {
-		"@types/node": "^11.13.22",
-		"@zxteam/contract": "^6.0.22",
+		"@types/node": "^11.15.3",
+		"@zxteam/contract": "^6.0.40",
 		"lodash": "^4.17.15"
 	},
 	"devDependencies": {
-		"@types/lodash": "^4.14.142",
+		"@types/lodash": "^4.14.149",
 		"@zxnode/build": "^0.0.34"
 	},
 	"keywords": [],

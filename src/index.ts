@@ -45,7 +45,6 @@ export interface Ensure {
 	nullableNumber(data: number | null, errorMessage?: string): number | null;
 	nullableObject<T = any>(data: T | null, errorMessage?: string): T | null;
 	nullableString(data: string | null, errorMessage?: string): string | null;
-
 }
 
 export function ensureFactory(errorFactory?: (message: string, data: any) => never): Ensure {
