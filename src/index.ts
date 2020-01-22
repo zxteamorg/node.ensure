@@ -50,8 +50,8 @@ export interface Ensure {
 export function ensureFactory(errorFactory?: (message: string, data: any) => never): Ensure {
 
 	function throwEnsureError(typeMsg: string, throwData: any, userErrorMessage?: string): never {
-		const errorMessage = `Expected data to be ${typeMsg}`;
-		const message = userErrorMessage !== undefined ? `${errorMessage}. ${userErrorMessage}` : errorMessage;
+		const errorMessage = `Expected data to be "${typeMsg}".`;
+		const message = userErrorMessage !== undefined ? `${userErrorMessage} ${errorMessage}` : errorMessage;
 		if (errorFactory !== undefined) {
 			errorFactory(message, throwData); // throws an user's error
 		}
