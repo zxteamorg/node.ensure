@@ -13,7 +13,8 @@ describe("Ensure tests", function () {
 	const specs = {
 		s: [
 			"array", "arrayBuffer", "boolean", "date", "defined", "integer",
-			"number", "object", "string", "nullableArray", "nullableArrayBuffer",
+			"number", "object", "string", "undefined",
+			"nullableArray", "nullableArrayBuffer",
 			"nullableBoolean", "nullableDate", "nullableDefined",
 			"nullableInteger", "nullableNumber", "nullableObject", "nullableString"
 		],
@@ -71,6 +72,11 @@ describe("Ensure tests", function () {
 					"nullableDate", "nullableDefined", "nullableInteger",
 					"nullableNumber", "nullableObject", "nullableString"
 				]
+				},
+				{
+					name: "undefined",
+					data: undefined,
+					should: ["undefined"]
 			}
 		]
 	};
@@ -89,7 +95,8 @@ describe("Ensure tests", function () {
 			});
 		});
 		specs.s.forEach(shouldNot => {
-			if (useCase.should.indexOf(shouldNot) === -1) {
+			const applyShouldNot: boolean = useCase.should.indexOf(shouldNot) === -1;
+			if (applyShouldNot) {
 				it(`Default Ensure ${useCase.name} should NOT work with ${shouldNot}`, function () {
 					const data = useCase.data;
 					let expectedError;
@@ -136,7 +143,7 @@ describe("Ensure tests", function () {
 		});
 	});
 
-	it(`Ensure undefiled should NOT work defined()`, function () {
+	it(`Ensure undefined should NOT work defined()`, function () {
 		let expectedError;
 		try {
 			ensure.defined(undefined);
@@ -145,7 +152,7 @@ describe("Ensure tests", function () {
 		}
 		assert.isDefined(expectedError);
 	});
-	it(`Ensure undefiled should NOT work nullableDefined()`, function () {
+	it(`Ensure undefined should NOT work nullableDefined()`, function () {
 		let expectedError;
 		try {
 			ensure.nullableDefined(undefined);
@@ -154,7 +161,7 @@ describe("Ensure tests", function () {
 		}
 		assert.isDefined(expectedError);
 	});
-	it(`Ensure undefiled should NOT work defined()`, function () {
+	it(`Ensure undefined should NOT work defined()`, function () {
 		let expectedError;
 		try {
 			ensureWithCustomError.defined(undefined);
@@ -163,7 +170,7 @@ describe("Ensure tests", function () {
 		}
 		assert.isDefined(expectedError);
 	});
-	it(`Ensure undefiled should NOT work nullableDefined()`, function () {
+	it(`Ensure undefined should NOT work nullableDefined()`, function () {
 		let expectedError;
 		try {
 			ensureWithCustomError.nullableDefined(undefined);
@@ -172,7 +179,7 @@ describe("Ensure tests", function () {
 		}
 		assert.isDefined(expectedError);
 	});
-	it(`Ensure undefiled should NOT work defined()`, function () {
+	it(`Ensure undefined should NOT work defined()`, function () {
 		let expectedError;
 		try {
 			ensure.defined(undefined, "Custom err message");
@@ -182,7 +189,7 @@ describe("Ensure tests", function () {
 		assert.isDefined(expectedError);
 		assert.include(expectedError.message, "Custom err message");
 	});
-	it(`Ensure undefiled should NOT work nullableDefined()`, function () {
+	it(`Ensure undefined should NOT work nullableDefined()`, function () {
 		let expectedError;
 		try {
 			ensure.nullableDefined(undefined, "Custom err message");
@@ -192,7 +199,7 @@ describe("Ensure tests", function () {
 		assert.isDefined(expectedError);
 		assert.include(expectedError.message, "Custom err message");
 	});
-	it(`Ensure undefiled should NOT work defined()`, function () {
+	it(`Ensure undefined should NOT work defined()`, function () {
 		let expectedError;
 		try {
 			ensure.defined(undefined, "Custom err message");
@@ -202,10 +209,20 @@ describe("Ensure tests", function () {
 		assert.isDefined(expectedError);
 		assert.include(expectedError.message, "Custom err message");
 	});
-	it(`Ensure undefiled should NOT work nullableDefined()`, function () {
+	it(`Ensure undefined should NOT work nullableDefined()`, function () {
 		let expectedError;
 		try {
 			ensure.nullableDefined(undefined, "Custom err message");
+		} catch (e) {
+			expectedError = e;
+		}
+		assert.isDefined(expectedError);
+		assert.include(expectedError.message, "Custom err message");
+	});
+	it(`Ensure undefined should NOT work nullableString()`, function () {
+		let expectedError;
+		try {
+			ensure.nullableString(undefined as any, "Custom err message");
 		} catch (e) {
 			expectedError = e;
 		}

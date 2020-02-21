@@ -36,6 +36,7 @@ export interface Ensure {
 	number(data: number, errorMessage?: string): number;
 	object<T = any>(data: T, errorMessage?: string): T;
 	string(data: string, errorMessage?: string): string;
+	undefined(data: any, errorMessage?: string): undefined;
 	nullableArray<T>(data: Array<T> | null, errorMessage?: string): Array<T> | null;
 	nullableArrayBuffer(data: ArrayBuffer | null, errorMessage?: string): ArrayBuffer | null;
 	nullableBoolean(data: boolean | null, errorMessage?: string): boolean | null;
@@ -65,7 +66,7 @@ export function ensureFactory(errorFactory?: (message: string, data: any) => nev
 		return data;
 	}
 	function NullableType<T>(data: T, checker: (v: T) => boolean, typeMsg: string, userErrorMessage?: string): T | null {
-		if (data != null && !checker(data)) {
+		if (data === undefined || (data !== null && !checker(data))) {
 			throwEnsureError(typeMsg, data, userErrorMessage);
 		}
 		return data;
@@ -105,6 +106,16 @@ export function ensureFactory(errorFactory?: (message: string, data: any) => nev
 		},
 		string: (data: string, errorMessage?: string): string => {
 			return Type(data, _.isString, "string", errorMessage);
+		},
+		undefined: (data: any, errorMessage?: string): undefined => {
+			if (data !== undefined) {
+				const message = errorMessage !== undefined ? errorMessage : "Expected data to be undefined";
+				if (errorFactory !== undefined) {
+					errorFactory(message, data); // throws an user's error
+				}
+				throw new EnsureError(message, data);
+			}
+			return data;
 		},
 
 		nullableArray: <T>(data: Array<T> | null, errorMessage?: string): Array<T> | null => {
