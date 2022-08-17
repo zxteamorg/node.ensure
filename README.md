@@ -1,3 +1,7 @@
+# DEPRECATED
+The project has been moved to https://github.com/freemework/common/tree/src-typescript
+
+
 # Ensure
 [![npm version badge](https://img.shields.io/npm/v/@zxteam/ensure.svg)](https://www.npmjs.com/package/@zxteam/ensure)
 [![downloads badge](https://img.shields.io/npm/dm/@zxteam/ensure.svg)](https://www.npmjs.org/package/@zxteam/ensure)
